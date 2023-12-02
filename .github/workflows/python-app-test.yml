@@ -24,4 +24,4 @@ jobs:
             python -m coverage run --source=src -m pytest tests
         - name: Coverage report
           run: |
-            python -m coverage report -m  
+            python -m coverage report -m
