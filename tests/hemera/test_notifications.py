@@ -1,6 +1,9 @@
 from unittest.mock import patch, MagicMock
 
-from hemera.notifications import send_slack_message
+from hemera.notifications import (
+    send_slack_message,
+    convert_http_request_dict_to_slack_message,
+)
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")
@@ -28,3 +31,12 @@ def test_send_slack_message_error():
     )
 
     assert response is None
+
+
+def test_convert_http_request_dict_to_slack_message(http_request_dict):
+    assert (
+        convert_http_request_dict_to_slack_message(
+            http_request_dict=http_request_dict,
+        )
+        == "Action: reopened, Pull request URL: http://fakeurl.com, Pull request Number: 17"
+    )

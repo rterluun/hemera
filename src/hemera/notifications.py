@@ -8,6 +8,23 @@ from slack_sdk.web.slack_response import SlackResponse
 LOGGER = getLogger(__name__)
 
 
+def convert_http_request_dict_to_slack_message(
+    http_request_dict: dict,
+    logger: Logger = LOGGER,
+) -> str:
+    """Convert an Azure Functions HTTP request dictionary to a Slack message."""
+    logger.info("Converting HTTP request dictionary to Slack message.")
+
+    try:
+        action = http_request_dict["body"]["action"]
+        pull_request_url = http_request_dict["body"]["pull_request"]["html_url"]
+        pull_request_number = http_request_dict["body"]["pull_request"]["number"]
+        return f"Action: {action}, Pull request URL: {pull_request_url}, Pull request Number: {pull_request_number}"
+    except KeyError:
+        logger.info("Key not found in HTTP request dictionary")
+        raise KeyError("Key not found in HTTP request dictionary")
+
+
 def send_slack_message(
     slack_api_token: str,
     channel: str,
