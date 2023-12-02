@@ -20,3 +20,11 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/rterluun/hemera"
 Issues = "https://github.com/rterluun/hemera/issues"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = [
+  ".", "src",
+]
