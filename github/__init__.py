@@ -15,7 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "url": req.url,
             "headers": dict(req.headers),
             "params": dict(req.params),
-            "get_body": req.get_body().decode(),
+            "get_body": req.get_json(),
         }
     )
     LOGGER.info(json_data)
