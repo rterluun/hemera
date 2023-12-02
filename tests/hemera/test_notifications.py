@@ -1,3 +1,4 @@
+import pytest
 from unittest.mock import patch, MagicMock
 
 from hemera.notifications import (
@@ -39,4 +40,12 @@ def test_convert_http_request_dict_to_slack_message(http_request_dict):
             http_request_dict=http_request_dict,
         )
         == "Action: reopened, Pull request URL: http://fakeurl.com, Pull request Number: 17"
+    )
+
+
+def test_convert_http_request_dict_to_slack_message_error():
+    pytest.raises(
+        KeyError,
+        convert_http_request_dict_to_slack_message,
+        http_request_dict={},
     )
