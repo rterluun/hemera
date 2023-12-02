@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hemera"
+version = "0.0.1"
+authors = [
+  { name="rterluun", email="r.ter.luun@gmail.com" },
+]
+description = "A Repository for the Hemera Project"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/rterluun/hemera"
+Issues = "https://github.com/rterluun/hemera/issues"
