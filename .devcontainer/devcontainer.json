@@ -16,7 +16,8 @@
 			"GitHub.copilot-chat",
 			"github.vscode-github-actions",
 			"ms-python.pylint",
-			"ms-python.black-formatter"
+			"ms-python.black-formatter",
+			"ms-azuretools.vscode-docker"
 		]
 	}
 }
