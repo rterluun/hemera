@@ -4,7 +4,7 @@ import azure.functions as func
 from hemera.http_request_handler import convert_http_request_to_dict
 from hemera.notifications import (
     send_slack_message,
-    convert_http_request_dict_to_slack_message,
+    select_fields_for_slack_message,
 )
 from hemera.exceptions import HemeraError, EnvironmentVariableNotSetError
 
@@ -24,7 +24,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             logger=LOGGER,
         )
 
-        message = convert_http_request_dict_to_slack_message(
+        message = select_fields_for_slack_message(
             http_request_dict=http_request_dict,
             logger=LOGGER,
         )
