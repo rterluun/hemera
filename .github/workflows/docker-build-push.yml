@@ -9,9 +9,9 @@ jobs:
 
         steps:
         - uses: actions/checkout@v4
-        # - name: Update CA certificates
-        #   run: sudo echo ${{ secrets.DOCKER_REGISTRY_CA_CERT }} > /usr/local/share/ca-
-        #     certificates/ca-certificate.crt && sudo update-ca-certificates
+        - name: Update CA certificates
+          run: sudo echo ${{ secrets.DOCKER_REGISTRY_CA_CERT }} > /usr/local/share/ca-
+            certificates/ca-certificate.crt && sudo update-ca-certificates
 
         - name: Set up QEMU
           uses: docker/setup-qemu-action@v3
@@ -25,5 +25,3 @@ jobs:
             context: .
             push: true
             tags: dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test
-          env:
-            DOCKER_TLS_VERIFY: 0
