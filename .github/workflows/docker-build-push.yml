@@ -9,9 +9,11 @@ jobs:
 
         steps:
         - uses: actions/checkout@v4
-        - name: Update CA certificates
-          run: sudo echo ${{ secrets.DOCKER_REGISTRY_CA_CERT }} > /usr/local/share/ca-
-            certificates/ca-certificate.crt && sudo update-ca-certificates
+        - name: Install ca-certificates
+          run: sudo apt-get install ca-certificates
+        # - name: Update CA certificates
+        #   run: sudo echo ${{ secrets.DOCKER_REGISTRY_CA_CERT }} > /usr/local/share/ca-
+        #     certificates/ca-certificate.crt && sudo update-ca-certificates
 
         # - name: Set up QEMU
         #   uses: docker/setup-qemu-action@v3
