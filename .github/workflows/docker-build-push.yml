@@ -11,17 +11,13 @@ jobs:
         - uses: actions/checkout@v4
 
         - name: Update CA certificates
-          run: cat .github/workflows/docker-registry-ca.crt
-          # /etc/ssl/certs/ca-certificates.crt
+          run: sudo cp .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/docker-registry-ca.crt && sudo update-ca-certificates
 
         - name: Set up QEMU
           uses: docker/setup-qemu-action@v3
 
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
-
-        - name: List
-          run: cat ~/.docker/config.json
 
         - name: Build and push
           uses: docker/build-push-action@v5
