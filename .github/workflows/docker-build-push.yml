@@ -1,6 +1,10 @@
-name: Python package
+name: Build and push Docker image
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Unit tests"]
+    types:
+      - completed
 
 jobs:
     docker-build:
