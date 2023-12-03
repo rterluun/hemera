@@ -9,8 +9,8 @@ jobs:
 
         steps:
         - uses: actions/checkout@v4
-        - name: Test
+        - name: Update CA certificates
           run: |
-            echo ${CA_CERT} > /tmp/ca.crt && cat /tmp/ca.crt
+            echo ${CA_CERT} > /etc/ssl/certs/docker-registry-ca.crt && update-ca-certificates
           env:
             CA_CERT: ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
