@@ -14,23 +14,11 @@ jobs:
           run: sudo cp .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/docker-registry-ca.crt && sudo update-ca-certificates
 
         - name: Docker build
-          run: docker build . -t {{ secrets.DOCKER_REGISTRY_SERVER }}/github-webhook:test
+          run: docker build . -t $DOCKER_REGISTRY_SERVER/github-webhook:test
+          env:
+            DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
 
         - name: Docker push
-          run: docker push {{ secrets.DOCKER_REGISTRY_SERVER }}/github-webhook:test
-
-        # - name: Set up QEMU
-        #   uses: docker/setup-qemu-action@v3
-
-        # - name: Set up Docker Buildx
-        #   uses: docker/setup-buildx-action@v3
-
-        # - name: List
-        #   run: ls -la /etc/docker/certs.d
-
-        # - name: Build and push
-        #   uses: docker/build-push-action@v5
-        #   with:
-        #     context: .
-        #     push: true
-        #     tags: dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test
+          run: docker push $DOCKER_REGISTRY_SERVER/github-webhook:test
+          env:
+            DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
