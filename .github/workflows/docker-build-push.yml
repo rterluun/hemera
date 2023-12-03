@@ -26,4 +26,4 @@ jobs:
             push: true
             tags: dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test
           env:
-            DOCKER_REGISTRY_CA_CERT: ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
+            DOCKER_TLS_VERIFY: 0
