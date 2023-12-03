@@ -13,11 +13,8 @@ jobs:
         - name: Update CA certificates
           run: sudo cp .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/docker-registry-ca.crt && sudo update-ca-certificates
 
-        - name: Version
-          run: docker --version
-
-        # - name: Docker build
-        #   run: docker build -t dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test .
+        - name: Docker build
+          run: docker build -t dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test .
 
 
         # - name: Set up QEMU
