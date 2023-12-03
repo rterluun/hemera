@@ -20,8 +20,8 @@ def convert_http_request_dict_to_slack_message(
         pull_request_number = http_request_dict["body"]["pull_request"]["number"]
         return f"Action: {action}, Pull request URL: {pull_request_url}, Pull request Number: {pull_request_number}"
     except Exception as e:
-        raise ValueNotFoundInDictError from e
         logger.error(f"Value not found in dictionary: {e}")
+        raise ValueNotFoundInDictError from e
 
 
 def send_slack_message(
@@ -36,5 +36,5 @@ def send_slack_message(
         response = client.chat_postMessage(channel=channel, text=message)
         return response
     except Exception as e:
-        raise SlackApiError from e
         logger.error(f"Error sending message to Slack: {e}")
+        raise SlackApiError from e
