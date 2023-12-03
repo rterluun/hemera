@@ -9,14 +9,17 @@ jobs:
 
         steps:
         - uses: actions/checkout@v4
-        - name: Update CA certificates
-          run: echo ${{ secrets.DOCKER_REGISTRY_CA_CERT }} > /tmp/ca-certificate.crt && sudo mv /tmp/ca-certificate.crt /usr/local/share/ca-certificates/ && sudo chmod 644 /usr/local/share/ca-certificates/ca-certificate.crt && sudo update-ca-certificates
+        # - name: Update CA certificates
+        #   run: echo ${{ secrets.DOCKER_REGISTRY_CA_CERT }} > /tmp/ca-certificate.crt && sudo mv /tmp/ca-certificate.crt /usr/local/share/ca-certificates/ && sudo chmod 644 /usr/local/share/ca-certificates/ca-certificate.crt && sudo update-ca-certificates
 
         - name: Set up QEMU
           uses: docker/setup-qemu-action@v3
 
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
+          env:
+            DOCKER_CLI_EXPERIMENTAL: enabled
+            DOCKER_TLS_VERIFY: 0
 
         - name: Build and push
           uses: docker/build-push-action@v5
@@ -24,3 +27,6 @@ jobs:
             context: .
             push: true
             tags: dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test
+          env:
+            DOCKER_CLI_EXPERIMENTAL: enabled
+            DOCKER_TLS_VERIFY: 0
