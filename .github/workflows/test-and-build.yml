@@ -35,10 +35,10 @@ jobs:
         - name: Update CA certificates
           run: sudo cp .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/docker-registry-ca.crt && sudo update-ca-certificates
         - name: Docker build
-          run: docker build . -t $DOCKER_REGISTRY_SERVER/github-webhook:test
+          run: docker build . -t $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
           env:
             DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
         - name: Docker push
-          run: docker push $DOCKER_REGISTRY_SERVER/github-webhook:test
+          run: docker push $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
           env:
             DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
