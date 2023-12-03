@@ -1,8 +1,7 @@
 from logging import getLogger, Logger
-from typing import Optional
 from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
 from slack_sdk.web.slack_response import SlackResponse
+from hemera.exceptions import ValueNotFoundInDictError, SlackApiError
 
 
 LOGGER = getLogger(__name__)
@@ -20,9 +19,9 @@ def convert_http_request_dict_to_slack_message(
         pull_request_url = http_request_dict["body"]["pull_request"]["html_url"]
         pull_request_number = http_request_dict["body"]["pull_request"]["number"]
         return f"Action: {action}, Pull request URL: {pull_request_url}, Pull request Number: {pull_request_number}"
-    except KeyError:
-        logger.info("Key not found in HTTP request dictionary")
-        raise KeyError("Key not found in HTTP request dictionary")
+    except Exception as e:
+        raise ValueNotFoundInDictError from e
+        logger.error(f"Value not found in dictionary: {e}")
 
 
 def send_slack_message(
@@ -30,12 +29,12 @@ def send_slack_message(
     channel: str,
     message: str,
     logger: Logger = LOGGER,
-) -> Optional[SlackResponse]:
+) -> SlackResponse:
     """Send a message to a Slack channel."""
     try:
         client = WebClient(token=slack_api_token)
         response = client.chat_postMessage(channel=channel, text=message)
         return response
-    except SlackApiError as e:
-        logger.error(f"Error sending Slack message: {e.response['error']}")
-        return None
+    except Exception as e:
+        raise SlackApiError from e
+        logger.error(f"Error sending message to Slack: {e}")

@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import patch, MagicMock
+import pytest
+
+from hemera.exceptions import HemeraError
 
 from hemera.notifications import (
     send_slack_message,
@@ -25,13 +27,9 @@ def test_send_slack_message(
 
 
 def test_send_slack_message_error():
-    response = send_slack_message(
-        slack_api_token="invalid_token",
-        channel="#channel_name",
-        message="some message",
+    pytest.raises(
+        HemeraError, send_slack_message, slack_api_token="", channel="", message=""
     )
-
-    assert response is None
 
 
 def test_convert_http_request_dict_to_slack_message(http_request_dict):
@@ -45,7 +43,7 @@ def test_convert_http_request_dict_to_slack_message(http_request_dict):
 
 def test_convert_http_request_dict_to_slack_message_error():
     pytest.raises(
-        KeyError,
+        HemeraError,
         convert_http_request_dict_to_slack_message,
         http_request_dict={},
     )
