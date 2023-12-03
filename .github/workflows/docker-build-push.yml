@@ -11,6 +11,6 @@ jobs:
         - uses: actions/checkout@v4
         - name: Update CA certificates
           run: |
-            echo ${CA_CERT} > /etc/ssl/certs/docker-registry-ca.crt && update-ca-certificates
+            echo ${CA_CERT} > /usr/local/share/ca-certificates/docker-registry-ca.crt && update-ca-certificates
           env:
             CA_CERT: ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
