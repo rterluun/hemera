@@ -8,9 +8,15 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-        - uses: actions/checkout@v4
-        - name: Update CA certificates
-          run: |
-            echo ${CA_CERT} > /usr/local/share/ca-certificates/docker-registry-ca.crt && update-ca-certificates
-          env:
-            CA_CERT: ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
+        - name: Set up QEMU
+          uses: docker/setup-qemu-action@v3
+
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+
+        - name: Build and push
+          uses: docker/build-push-action@v5
+          with:
+            context: .
+            push: true
+            tags: dcxkaeopvefubxjnaci.ddns.net:5000/github-webhook:test
