@@ -46,9 +46,6 @@ jobs:
             sudo update-ca-certificates
           env:
             DOCKER_REGISTRY_CA_CERT:  ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
-        - name: Difference between files
-          run: |
-            diff .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/ca.crt
         - name: Docker build
           run: docker build . -t $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
           env:
