@@ -26,7 +26,7 @@ addopts = [
     "--import-mode=importlib",
 ]
 pythonpath = [
-  "src",
+  ".", "src",
 ]
 
 [tool.hatch.version]
