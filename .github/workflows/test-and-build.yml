@@ -38,16 +38,17 @@ jobs:
 
         steps:
         - uses: actions/checkout@v4
-        - name: Update CA certificates
-          run: |
-            echo "$DOCKER_REGISTRY_CA_CERT" | base64 --decode > ca.crt
-            sudo mv ca.crt /usr/local/share/ca-certificates/ca.crt
-            sudo chmod 644 /usr/local/share/ca-certificates/ca.crt
-            sudo update-ca-certificates
-          env:
-            DOCKER_REGISTRY_CA_CERT:  ${{ env.DOCKER_REGISTRY_CA_CERT }}
+        # - name: Update CA certificates
+        #   run: |
+        #     echo "$DOCKER_REGISTRY_CA_CERT" | base64 --decode > ca.crt
+        #     sudo mv ca.crt /usr/local/share/ca-certificates/ca.crt
+        #     sudo chmod 644 /usr/local/share/ca-certificates/ca.crt
+        #     sudo update-ca-certificates
+        #   env:
+        #     DOCKER_REGISTRY_CA_CERT:  ${{ env.DOCKER_REGISTRY_CA_CERT }}
         - name: Difference between files
           run: |
+            env
             diff .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/ca.crt
         - name: Docker build
           run: docker build . -t $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
