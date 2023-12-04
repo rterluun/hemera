@@ -1,1 +1,7 @@
 local.settings.json
+.devcontainer/
+.github/
+tests/
+.gitignore
+.pre-commit-config.yaml
+Dockerfile
