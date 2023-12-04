@@ -39,7 +39,11 @@ jobs:
         steps:
         - uses: actions/checkout@v4
         - name: Update CA certificates
-          run: sudo cp .github/workflows/docker-registry-ca.crt /usr/local/share/ca-certificates/docker-registry-ca.crt && sudo update-ca-certificates
+          run: |
+            sudo echo "$DOCKER_REGISTRY_CA_CERT" | base64 --decode > /usr/local/share/ca-certificates/ca.crt
+            sudo update-ca-certificates
+          env:
+            DOCKER_REGISTRY_CA_CERT: ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
         - name: Docker build
           run: docker build . -t $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
           env:
