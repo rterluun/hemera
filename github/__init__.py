@@ -14,9 +14,12 @@ LOGGER = getLogger(__name__)
 def main(req: func.HttpRequest) -> func.HttpResponse:
     LOGGER.info("Python HTTP trigger function processed a request.")
     slack_api_token = os_getenv("SLACK_API_TOKEN")
+    slack_channel = os_getenv("SLACK_CHANNEL")
 
     try:
-        if not slack_api_token:
+        if (
+            not slack_api_token or not slack_channel
+        ):  # Check if environment variables are set
             raise EnvironmentVariableNotSetError
 
         http_request_dict = convert_http_request_to_dict(
@@ -31,7 +34,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         send_slack_message(
             slack_api_token=slack_api_token,
-            channel=os_getenv("SLACK_CHANNEL"),
+            channel=slack_channel,
             message=message,
             logger=LOGGER,
         )
