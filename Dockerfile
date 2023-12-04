@@ -6,9 +6,10 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    git=1:2.30.2-1+deb11u2 \
+    && rm -rf /var/cache/apt/*
 
 COPY . /home/site/wwwroot
-RUN pip install -r /home/site/wwwroot/requirements.txt
-RUN pip install /home/site/wwwroot
+
+RUN pip install --no-cache-dir -r /home/site/wwwroot/requirements.txt \
+    && pip install --no-cache-dir /home/site/wwwroot
