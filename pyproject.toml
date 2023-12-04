@@ -31,3 +31,7 @@ pythonpath = [
 
 [tool.hatch.version]
 source = "vcs"
+
+[tool.isort]
+profile = "black"
+src_paths = [".", "src", "tests"]

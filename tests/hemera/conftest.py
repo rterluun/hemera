@@ -1,5 +1,5 @@
-import pytest
 import azure.functions as func
+import pytest
 
 
 @pytest.fixture

@@ -1,4 +1,5 @@
-from logging import getLogger, Logger
+from logging import Logger, getLogger
+
 import azure.functions as func
 
 LOGGER = getLogger(__name__)

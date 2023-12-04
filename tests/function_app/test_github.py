@@ -1,6 +1,8 @@
 from os import environ as os_environ
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import azure.functions as func
+
 from github import main as github_api
 
 

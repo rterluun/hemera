@@ -1,12 +1,11 @@
 from logging import getLogger
 from os import getenv as os_getenv
+
 import azure.functions as func
+
+from hemera.exceptions import EnvironmentVariableNotSetError, HemeraError
 from hemera.http_request_handler import convert_http_request_to_dict
-from hemera.notifications import (
-    send_slack_message,
-    select_fields_for_slack_message,
-)
-from hemera.exceptions import HemeraError, EnvironmentVariableNotSetError
+from hemera.notifications import select_fields_for_slack_message, send_slack_message
 
 LOGGER = getLogger(__name__)
 

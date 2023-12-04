@@ -1,12 +1,9 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from hemera.exceptions import HemeraError
-
-from hemera.notifications import (
-    send_slack_message,
-    select_fields_for_slack_message,
-)
+from hemera.notifications import select_fields_for_slack_message, send_slack_message
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")
