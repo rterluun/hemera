@@ -18,7 +18,8 @@
 			"ms-python.pylint",
 			"ms-python.black-formatter",
 			"ms-azuretools.vscode-docker",
-			"eamodio.gitlens"
+			"eamodio.gitlens",
+			"GitHub.vscode-pull-request-github"
 		]
 	}
 }
