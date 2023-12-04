@@ -1,3 +1,4 @@
+import json
 from os import environ as os_environ
 from unittest.mock import MagicMock, patch
 
@@ -10,6 +11,28 @@ def test_github_api_environment_variables_not_set(test_request: func.HttpRequest
     test = github_api(req=test_request)
     assert test.get_body().decode() == "Error: Environment variable not set."
     assert test.status_code == 400
+
+
+def test_github_api_value_not_found():
+    os_environ["SLACK_API_TOKEN"] = "fake_token"
+    os_environ["SLACK_CHANNEL"] = "fake_channel"
+
+    test = github_api(
+        req=func.HttpRequest(
+            method="POST",
+            url="/",
+            headers={},
+            params={},
+            route_params={},
+            body=json.dumps({}).encode("utf-8"),
+        )
+    )
+
+    assert test.get_body().decode() == "Error: Value not found in dictionary."
+    assert test.status_code == 400
+
+    os_environ.pop("SLACK_API_TOKEN", None)
+    os_environ.pop("SLACK_CHANNEL", None)
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")
