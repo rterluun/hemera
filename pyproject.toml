@@ -1,10 +1,10 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry]
 name = "hemera"
-version = "0.1.0"
+version = "0.0.0"
 description = "A Repository for the Hemera Project"
 authors = ["rterluun"]
 readme = "README.md"
@@ -35,3 +35,9 @@ pythonpath = [
 [tool.isort]
 profile = "black"
 src_paths = [".", "src", "tests"]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+metadata = true
+tagged-metadata = true
