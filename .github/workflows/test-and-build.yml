@@ -1,12 +1,9 @@
 name: Unit tests and building docker image
-
 on: [push, pull_request]
 
 jobs:
     tests:
-
         runs-on: ubuntu-latest
-
         steps:
         - uses: actions/checkout@v4
         - name: Set up Python
@@ -33,9 +30,11 @@ jobs:
             poetry run coverage report -m
     build:
         needs: tests
-
         runs-on: ubuntu-latest
-
+        env:
+            DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
+            DOCKER_IMAGE_NAME: ${{ github.repository }}
+            DOCKER_IMAGE_TAG: ${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
         steps:
         - uses: actions/checkout@v4
         - name: Update CA certificates
@@ -47,10 +46,8 @@ jobs:
           env:
             DOCKER_REGISTRY_CA_CERT:  ${{ secrets.DOCKER_REGISTRY_CA_CERT }}
         - name: Docker build
-          run: docker build . -t $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
-          env:
-            DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
+          run: \
+            docker build . -t ${{ env.DOCKER_REGISTRY_SERVER}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG}}
         - name: Docker push
-          run: docker push $DOCKER_REGISTRY_SERVER/${{ github.repository }}:${{ github.ref == 'refs/heads/master' && 'latest' || 'test' }}
-          env:
-            DOCKER_REGISTRY_SERVER: ${{ secrets.DOCKER_REGISTRY_SERVER }}
+          run: \
+            docker push ${{ env.DOCKER_REGISTRY_SERVER}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG}}
