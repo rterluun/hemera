@@ -11,5 +11,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY . /home/site/wwwroot
 
-RUN pip install --no-cache-dir -r /home/site/wwwroot/requirements.txt \
-    && pip install --no-cache-dir /home/site/wwwroot
+RUN pip install --no-cache-dir /home/site/wwwroot
