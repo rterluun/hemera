@@ -40,6 +40,7 @@ jobs:
         - uses: actions/checkout@v4
         - name: Update CA certificates
           run: |
+            echo "$DOCKER_REGISTRY_CA_CERT"
             echo "$DOCKER_REGISTRY_CA_CERT" | base64 --decode > ca.crt
             sudo mv ca.crt /usr/local/share/ca-certificates/ca.crt
             sudo chmod 644 /usr/local/share/ca-certificates/ca.crt
