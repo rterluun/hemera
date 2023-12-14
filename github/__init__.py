@@ -4,6 +4,7 @@ from os import getenv as os_getenv
 import azure.functions as func
 
 from hemera.exceptions import EnvironmentVariableNotSetError, HemeraError
+from hemera.homeautomation import run_homeautomation_webhook
 from hemera.http_request_handler import convert_http_request_to_dict
 from hemera.notifications import select_fields_for_slack_message, send_slack_message
 
@@ -14,10 +15,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     LOGGER.info("Python HTTP trigger function processed a request.")
     slack_api_token = os_getenv("SLACK_API_TOKEN")
     slack_channel = os_getenv("SLACK_CHANNEL")
+    homeautomation_webhook = os_getenv("HOMEAUTOMATION_WEBHOOK")
 
     try:
         if (
-            not slack_api_token or not slack_channel
+            not slack_api_token or not slack_channel or not homeautomation_webhook
         ):  # Check if environment variables are set
             raise EnvironmentVariableNotSetError
 
@@ -34,6 +36,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         send_slack_message(
             slack_api_token=slack_api_token,
             channel=slack_channel,
+            message=message,
+            logger=LOGGER,
+        )
+
+        run_homeautomation_webhook(
+            homeautomation_webhook=homeautomation_webhook,
             message=message,
             logger=LOGGER,
         )

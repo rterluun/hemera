@@ -21,3 +21,10 @@ class EnvironmentVariableNotSetError(HemeraError):
 
     def __init__(self):
         raise HemeraError("Environment variable not set.")
+
+
+class HomeAutomationWebhookError(HemeraError):
+    """Raised when an error occurs when running the Home Automation webhook."""
+
+    def __init__(self):
+        raise HemeraError("Error running Home Automation webhook.")

@@ -16,6 +16,7 @@ packages = [
 python = "^3.8"
 azure-functions = "^1.17.0"
 slack_sdk = "^3.26.0"
+requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
 coverage = {extras = ["toml"], version = "^7.3.2"}
