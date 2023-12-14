@@ -9,7 +9,7 @@ description = "A Repository for the Hemera Project"
 authors = ["rterluun"]
 readme = "README.md"
 packages = [
-  { include = "src" }
+  { include = "hemera", from = "src" },
 ]
 
 [tool.poetry.dependencies]
