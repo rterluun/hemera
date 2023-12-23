@@ -3,9 +3,16 @@ from os import getenv as os_getenv
 
 import azure.functions as func
 
-from hemera.exceptions import EnvironmentVariableNotSetError, HemeraError
+from hemera.exceptions import (
+    EnvironmentVariableNotSetError,
+    HemeraError,
+    UnauthorizedUserError,
+)
 from hemera.handlers import AutomationHandler
-from hemera.http_request_handler import convert_http_request_to_dict
+from hemera.http_request_handler import (
+    convert_http_request_to_dict,
+    get_username_from_http_request_dict,
+)
 
 LOGGER = getLogger(__name__)
 
@@ -15,10 +22,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     slack_api_token = os_getenv("SLACK_API_TOKEN")
     slack_channel = os_getenv("SLACK_CHANNEL")
     homeautomation_webhook = os_getenv("HOMEAUTOMATION_WEBHOOK")
+    allowed_username = os_getenv("ALLOWED_USERNAME")
 
     try:
         if (
-            not slack_api_token or not slack_channel or not homeautomation_webhook
+            not slack_api_token
+            or not slack_channel
+            or not homeautomation_webhook
+            or not allowed_username
         ):  # Check if environment variables are set
             raise EnvironmentVariableNotSetError
 
@@ -26,6 +37,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             req=req,
             logger=LOGGER,
         )
+
+        username = get_username_from_http_request_dict(
+            http_request_dict=http_request_dict,
+            logger=LOGGER,
+        )
+
+        if username != allowed_username:
+            raise UnauthorizedUserError
 
         automation_handler = AutomationHandler(
             slack_api_token=slack_api_token,

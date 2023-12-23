@@ -2,6 +2,8 @@ from logging import Logger, getLogger
 
 import azure.functions as func
 
+from hemera.exceptions import ValueNotFoundInDictError
+
 LOGGER = getLogger(__name__)
 
 
@@ -29,3 +31,25 @@ def convert_http_request_to_dict(
     logger.debug(f"Converted HTTP request to dictionary: {http_request_dict}")
 
     return http_request_dict
+
+
+def get_username_from_http_request_dict(
+    http_request_dict: dict,
+    logger: Logger = LOGGER,
+) -> str:
+    """
+    Get the username from an HTTP request dictionary.
+
+    Args:
+        http_request_dict (dict): The HTTP request dictionary to get the username from.
+
+    Returns:
+        str: The username.
+    """
+    try:
+        username = http_request_dict["body"]["sender"]["login"]
+        logger.debug(f"Got username from HTTP request dictionary: {username}")
+        return username
+    except Exception as e:
+        logger.error(f"Username not found in dictionary: {e}")
+        raise ValueNotFoundInDictError from e

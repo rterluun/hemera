@@ -18,6 +18,7 @@ def test_github_api_value_not_found():
     os_environ["SLACK_API_TOKEN"] = "fake_token"
     os_environ["SLACK_CHANNEL"] = "fake_channel"
     os_environ["HOMEAUTOMATION_WEBHOOK"] = "http://fakeurl.com"
+    os_environ["ALLOWED_USERNAME"] = "username"
 
     test = github_api(
         req=func.HttpRequest(
@@ -36,6 +37,7 @@ def test_github_api_value_not_found():
     os_environ.pop("SLACK_API_TOKEN", None)
     os_environ.pop("SLACK_CHANNEL", None)
     os_environ.pop("HOMEAUTOMATION_WEBHOOK", None)
+    os_environ.pop("ALLOWED_USERNAME", None)
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")
@@ -46,6 +48,7 @@ def test_github_api_message_sent_to_slack_successfully(
     os_environ["SLACK_API_TOKEN"] = "fake_token"
     os_environ["SLACK_CHANNEL"] = "fake_channel"
     os_environ["HOMEAUTOMATION_WEBHOOK"] = "http://fakeurl.com"
+    os_environ["ALLOWED_USERNAME"] = "username"
 
     with requests_mock.Mocker() as m:
         m.post("http://fakeurl.com", text="OK")
@@ -69,3 +72,20 @@ def test_github_api_message_sent_to_slack_successfully(
     os_environ.pop("SLACK_API_TOKEN", None)
     os_environ.pop("SLACK_CHANNEL", None)
     os_environ.pop("HOMEAUTOMATION_WEBHOOK", None)
+    os_environ.pop("ALLOWED_USERNAME", None)
+
+
+def test_github_api_username_not_allowed(test_request: func.HttpRequest):
+    os_environ["SLACK_API_TOKEN"] = "fake_token"
+    os_environ["SLACK_CHANNEL"] = "fake_channel"
+    os_environ["HOMEAUTOMATION_WEBHOOK"] = "http://fakeurl.com"
+    os_environ["ALLOWED_USERNAME"] = "fake_username"
+
+    test = github_api(req=test_request)
+    assert test.get_body().decode() == "Error: Unauthorized user."
+    assert test.status_code == 400
+
+    os_environ.pop("SLACK_API_TOKEN", None)
+    os_environ.pop("SLACK_CHANNEL", None)
+    os_environ.pop("HOMEAUTOMATION_WEBHOOK", None)
+    os_environ.pop("ALLOWED_USERNAME", None)
