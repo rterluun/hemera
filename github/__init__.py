@@ -6,7 +6,7 @@ import azure.functions as func
 from hemera.exceptions import EnvironmentVariableNotSetError, HemeraError
 from hemera.homeautomation import run_homeautomation_webhook
 from hemera.http_request_handler import convert_http_request_to_dict
-from hemera.notifications import select_fields_for_slack_message, send_slack_message
+from hemera.notifications import create_slack_message, send_slack_message
 
 LOGGER = getLogger(__name__)
 
@@ -28,7 +28,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             logger=LOGGER,
         )
 
-        message = select_fields_for_slack_message(
+        message = create_slack_message(
             http_request_dict=http_request_dict,
             logger=LOGGER,
         )

@@ -8,7 +8,7 @@ from hemera.exceptions import SlackApiError, ValueNotFoundInDictError
 LOGGER = getLogger(__name__)
 
 
-def select_fields_for_slack_message(
+def create_slack_message(
     http_request_dict: dict,
     logger: Logger = LOGGER,
 ) -> str:

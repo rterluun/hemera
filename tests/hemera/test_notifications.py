@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from hemera.exceptions import HemeraError
-from hemera.notifications import select_fields_for_slack_message, send_slack_message
+from hemera.notifications import create_slack_message, send_slack_message
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")
@@ -29,18 +29,18 @@ def test_send_slack_message_error():
     )
 
 
-def test_select_fields_for_slack_message(http_request_dict):
+def test_create_slack_message(http_request_dict):
     assert (
-        select_fields_for_slack_message(
+        create_slack_message(
             http_request_dict=http_request_dict,
         )
         == "Action: reopened, Pull request URL: http://fakeurl.com, Pull request Number: 17"
     )
 
 
-def test_select_fields_for_slack_message_error():
+def test_create_slack_message_error():
     pytest.raises(
         HemeraError,
-        select_fields_for_slack_message,
+        create_slack_message,
         http_request_dict={},
     )
