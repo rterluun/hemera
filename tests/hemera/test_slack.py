@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from hemera.exceptions import HemeraError
-from hemera.notifications import create_slack_message, send_slack_message
+from hemera.slack import create_slack_message, send_slack_message
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")

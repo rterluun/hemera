@@ -4,9 +4,8 @@ from os import getenv as os_getenv
 import azure.functions as func
 
 from hemera.exceptions import EnvironmentVariableNotSetError, HemeraError
-from hemera.homeautomation import run_homeautomation_webhook
+from hemera.handlers import AutomationHandler
 from hemera.http_request_handler import convert_http_request_to_dict
-from hemera.notifications import create_slack_message, send_slack_message
 
 LOGGER = getLogger(__name__)
 
@@ -28,23 +27,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             logger=LOGGER,
         )
 
-        message = create_slack_message(
-            http_request_dict=http_request_dict,
-            logger=LOGGER,
-        )
-
-        send_slack_message(
+        automation_handler = AutomationHandler(
             slack_api_token=slack_api_token,
-            channel=slack_channel,
-            message=message,
+            slack_channel=slack_channel,
+            homeautomation_webhook=homeautomation_webhook,
             logger=LOGGER,
         )
 
-        run_homeautomation_webhook(
-            homeautomation_webhook=homeautomation_webhook,
-            message=message,
-            logger=LOGGER,
-        )
+        automation_handler.handle_request(http_request_dict)
 
     except HemeraError as e:
         return func.HttpResponse(f"Error: {e}", status_code=400)

@@ -7,7 +7,7 @@ from hemera.exceptions import HomeAutomationWebhookError
 LOGGER = getLogger(__name__)
 
 
-def run_homeautomation_webhook(
+def send_request_to_homeautomation_webhook(
     homeautomation_webhook: str,
     message: str,
     logger: Logger = LOGGER,
