@@ -1,4 +1,5 @@
 import json
+from os import environ as os_environ
 
 import azure.functions as func
 import pytest
@@ -21,3 +22,18 @@ def test_request():
 @pytest.fixture
 def http_request_dict():
     return {"header": HEADER, "body": BODY}
+
+
+@pytest.fixture(autouse=True)
+def set_env_vars():
+    os_environ["SLACK_API_TOKEN"] = "fake_token"
+    os_environ["SLACK_CHANNEL"] = "fake_channel"
+    os_environ["HOMEAUTOMATION_WEBHOOK"] = "http://fakeurl.com"
+    os_environ["ALLOWED_USERNAME"] = "username"
+
+    yield
+
+    os_environ.pop("SLACK_API_TOKEN", None)
+    os_environ.pop("SLACK_CHANNEL", None)
+    os_environ.pop("HOMEAUTOMATION_WEBHOOK", None)
+    os_environ.pop("ALLOWED_USERNAME", None)
