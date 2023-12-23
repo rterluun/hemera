@@ -30,11 +30,11 @@ def test_send_slack_message_error():
 
 
 def test_create_slack_message(http_request_dict):
-    assert (
-        create_slack_message(
-            http_request_dict=http_request_dict,
-        )
-        == "Action: reopened, Pull request URL: http://fakeurl.com, Pull request Number: 17"
+    assert create_slack_message(
+        http_request_dict=http_request_dict,
+    ) == (
+        "The following action [reopened] was performed on the repository: username/repository_name\n"
+        "The action was performed by: username"
     )
 
 

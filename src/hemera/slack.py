@@ -12,14 +12,26 @@ def create_slack_message(
     http_request_dict: dict,
     logger: Logger = LOGGER,
 ) -> str:
-    """Convert an Azure Functions HTTP request dictionary to a Slack message."""
+    """
+    Convert an Azure Functions HTTP request dictionary to a Slack message.
+
+    Args:
+        http_request_dict (dict): The HTTP request dictionary to create the Slack message from.
+        logger (Logger, optional): The logger to use. Defaults to LOGGER.
+
+    Returns:
+        str: The created Slack message.
+    """
     logger.info("Converting HTTP request dictionary to Slack message.")
 
     try:
         action = http_request_dict["body"]["action"]
-        pull_request_url = http_request_dict["body"]["pull_request"]["html_url"]
-        pull_request_number = http_request_dict["body"]["pull_request"]["number"]
-        return f"Action: {action}, Pull request URL: {pull_request_url}, Pull request Number: {pull_request_number}"
+        repository = http_request_dict["body"]["repository"]["full_name"]
+        user = http_request_dict["body"]["sender"]["login"]
+        return (
+            f"The following action [{action}] was performed on the repository: {repository}\n"
+            f"The action was performed by: {user}"
+        )
     except Exception as e:
         logger.error(f"Value not found in dictionary: {e}")
         raise ValueNotFoundInDictError from e

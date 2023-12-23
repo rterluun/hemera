@@ -56,7 +56,10 @@ def test_github_api_message_sent_to_slack_successfully(
             "chat.postMessage",
             json={
                 "channel": "fake_channel",
-                "text": "Action: reopened, Pull request URL: http://fakeurl.com, Pull request Number: 17",
+                "text": (
+                    "The following action [reopened] was performed on the repository: "
+                    "username/repository_name\nThe action was performed by: username"
+                ),
             },
         )
 
