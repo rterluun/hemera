@@ -35,3 +35,17 @@ class UnauthorizedUserError(HemeraError):
 
     def __init__(self):
         raise HemeraError("Unauthorized user.")
+
+
+class SoftwareVerionsNotFoundError(HemeraError):
+    """Raised when the software versions are not found."""
+
+    def __init__(self):
+        raise HemeraError("Software versions not found.")
+
+
+class ValueNotFoundInHemeraMetadata(HemeraError):
+    """Raised when a value is not found in a dictionary."""
+
+    def __init__(self):
+        raise HemeraError("Value not found in HemeraMetadata.")

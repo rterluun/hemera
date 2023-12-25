@@ -20,7 +20,8 @@ def create_slack_message(
         return (
             f"The following action [{hemera_http_request.action}] "
             f"was performed on the repository: {hemera_http_request.repository}\n"
-            f"The action was performed by: {hemera_http_request.username}"
+            f"The action was performed by: {hemera_http_request.username}\n"
+            f"Created by Hemera v{hemera_http_request.metadata.core}"
         )
     except Exception as e:
         logger.error(f"Value not found in HemeraHttpRequest: {e}")

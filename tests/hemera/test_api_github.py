@@ -48,7 +48,8 @@ def test_github_api_message_sent_to_slack_successfully(
                 "channel": "fake_channel",
                 "text": (
                     "The following action [reopened] was performed on the repository: "
-                    "username/repository_name\nThe action was performed by: username"
+                    "username/repository_name\nThe action was performed by: username\n"
+                    "Created by Hemera v0.0.0"
                 ),
             },
         )

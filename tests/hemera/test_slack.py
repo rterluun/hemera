@@ -37,7 +37,8 @@ def test_create_slack_message(hemera_http_request):
         hemera_http_request=hemera_http_request,
     ) == (
         "The following action [reopened] was performed on the repository: username/repository_name\n"
-        "The action was performed by: username"
+        "The action was performed by: username\n"
+        "Created by Hemera v0.0.0"
     )
 
 
