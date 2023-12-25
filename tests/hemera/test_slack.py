@@ -24,10 +24,12 @@ def test_send_slack_message(
     )
 
 
-def test_send_slack_message_error():
-    pytest.raises(
-        HemeraError, send_slack_message, slack_api_token="", channel="", message=""
-    )
+@patch("slack_sdk.web.client.WebClient.api_call")
+def test_send_slack_message_error(api_call=MagicMock()):
+    with pytest.raises(HemeraError, match="Error sending message to Slack."):
+        _ = send_slack_message(slack_api_token={}, channel="", message="")
+
+    api_call.assert_not_called()
 
 
 def test_create_slack_message(hemera_http_request):
