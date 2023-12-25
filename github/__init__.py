@@ -9,10 +9,7 @@ from hemera.exceptions import (
     UnauthorizedUserError,
 )
 from hemera.handlers import AutomationHandler
-from hemera.http_request_handler import (
-    convert_http_request_to_dict,
-    get_username_from_http_request_dict,
-)
+from hemera.types import HemeraHttpRequest
 
 LOGGER = getLogger(__name__)
 
@@ -33,17 +30,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         ):  # Check if environment variables are set
             raise EnvironmentVariableNotSetError
 
-        http_request_dict = convert_http_request_to_dict(
-            req=req,
-            logger=LOGGER,
+        hemera_http_request = HemeraHttpRequest.from_azure_functions_http_request(
+            req=req, logger=LOGGER
         )
 
-        username = get_username_from_http_request_dict(
-            http_request_dict=http_request_dict,
-            logger=LOGGER,
-        )
-
-        if username != allowed_username:
+        if hemera_http_request.username != allowed_username:
             raise UnauthorizedUserError
 
         automation_handler = AutomationHandler(
@@ -53,7 +44,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             logger=LOGGER,
         )
 
-        automation_handler.handle_request(http_request_dict)
+        automation_handler.handle_request(hemera_http_request=hemera_http_request)
 
     except HemeraError as e:
         return func.HttpResponse(f"Error: {e}", status_code=400)

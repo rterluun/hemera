@@ -4,6 +4,8 @@ from os import environ as os_environ
 import azure.functions as func
 import pytest
 
+from hemera.datatypes import HttpRequest
+from hemera.types import HemeraHttpRequest
 from tests.hemera.resources.http_request_data import BODY, HEADER
 
 
@@ -20,8 +22,11 @@ def test_request():
 
 
 @pytest.fixture
-def http_request_dict():
-    return {"header": HEADER, "body": BODY}
+def hemera_http_request():
+    hemera_http_request = HemeraHttpRequest()
+    hemera_http_request.req = HttpRequest(header=HEADER, body=BODY)
+
+    return hemera_http_request
 
 
 @pytest.fixture(autouse=True)

@@ -3,38 +3,28 @@ from logging import Logger, getLogger
 from slack_sdk import WebClient
 from slack_sdk.web.slack_response import SlackResponse
 
-from hemera.exceptions import SlackApiError, ValueNotFoundInDictError
+from hemera.exceptions import SlackApiError, ValueNotFoundInHemeraHttpRequest
+from hemera.types import HemeraHttpRequest
 
 LOGGER = getLogger(__name__)
 
 
 def create_slack_message(
-    http_request_dict: dict,
+    hemera_http_request: HemeraHttpRequest,
     logger: Logger = LOGGER,
 ) -> str:
-    """
-    Convert an Azure Functions HTTP request dictionary to a Slack message.
-
-    Args:
-        http_request_dict (dict): The HTTP request dictionary to create the Slack message from.
-        logger (Logger, optional): The logger to use. Defaults to LOGGER.
-
-    Returns:
-        str: The created Slack message.
-    """
+    """Convert an Azure Functions HTTP request to a Slack message."""
     logger.info("Converting HTTP request dictionary to Slack message.")
 
     try:
-        action = http_request_dict["body"]["action"]
-        repository = http_request_dict["body"]["repository"]["full_name"]
-        user = http_request_dict["body"]["sender"]["login"]
         return (
-            f"The following action [{action}] was performed on the repository: {repository}\n"
-            f"The action was performed by: {user}"
+            f"The following action [{hemera_http_request.action}] "
+            f"was performed on the repository: {hemera_http_request.repository}\n"
+            f"The action was performed by: {hemera_http_request.username}"
         )
     except Exception as e:
-        logger.error(f"Value not found in dictionary: {e}")
-        raise ValueNotFoundInDictError from e
+        logger.error(f"Value not found in HemeraHttpRequest: {e}")
+        raise ValueNotFoundInHemeraHttpRequest from e
 
 
 def send_slack_message(

@@ -2,11 +2,11 @@ class HemeraError(Exception):
     """Base class for all Hemera errors."""
 
 
-class ValueNotFoundInDictError(HemeraError):
+class ValueNotFoundInHemeraHttpRequest(HemeraError):
     """Raised when a value is not found in a dictionary."""
 
     def __init__(self):
-        raise HemeraError("Value not found in dictionary.")
+        raise HemeraError("Value not found in HemeraHttpRequest.")
 
 
 class SlackApiError(HemeraError):

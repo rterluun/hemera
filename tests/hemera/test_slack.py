@@ -4,6 +4,7 @@ import pytest
 
 from hemera.exceptions import HemeraError
 from hemera.slack import create_slack_message, send_slack_message
+from hemera.types import HemeraHttpRequest
 
 
 @patch("slack_sdk.web.client.WebClient.api_call")
@@ -29,9 +30,9 @@ def test_send_slack_message_error():
     )
 
 
-def test_create_slack_message(http_request_dict):
+def test_create_slack_message(hemera_http_request):
     assert create_slack_message(
-        http_request_dict=http_request_dict,
+        hemera_http_request=hemera_http_request,
     ) == (
         "The following action [reopened] was performed on the repository: username/repository_name\n"
         "The action was performed by: username"
@@ -42,5 +43,5 @@ def test_create_slack_message_error():
     pytest.raises(
         HemeraError,
         create_slack_message,
-        http_request_dict={},
+        hemera_http_request=HemeraHttpRequest(),
     )

@@ -2,6 +2,7 @@ from logging import Logger, getLogger
 
 from hemera.homeautomation import send_request_to_homeautomation_webhook
 from hemera.slack import create_slack_message, send_slack_message
+from hemera.types import HemeraHttpRequest
 
 LOGGER = getLogger(__name__)
 
@@ -35,16 +36,16 @@ class AutomationHandler:
 
     def _create_slack_message(
         self,
-        http_request_dict: dict,
+        hemera_http_request: HemeraHttpRequest,
     ):
         """
-        Create a Slack message based on the given HTTP request dictionary.
+        Create a Slack message based on the HemeraHttpRequest.
 
         Args:
             http_request_dict (dict): The HTTP request dictionary to create the Slack message from.
         """
         self.message = create_slack_message(
-            http_request_dict=http_request_dict,
+            hemera_http_request=hemera_http_request,
             logger=self.logger,
         )
 
@@ -71,15 +72,15 @@ class AutomationHandler:
 
     def handle_request(
         self,
-        http_request_dict: dict,
+        hemera_http_request: HemeraHttpRequest,
     ):
         """
-        Handle an HTTP request by creating a Slack message from the request dictionary,
+        Handle an HTTP request by creating a Slack message from the HemeraHttpRequest,
         sending the Slack message, and sending a request to the home automation webhook.
 
         Args:
             http_request_dict (dict): The HTTP request dictionary to create the Slack message from.
         """
-        self._create_slack_message(http_request_dict)
+        self._create_slack_message(hemera_http_request=hemera_http_request)
         self._send_slack_message()
         self._send_request_to_homeautomation_webhook()

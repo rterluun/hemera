@@ -28,7 +28,7 @@ def test_github_api_value_not_found():
         )
     )
 
-    assert test.get_body().decode() == "Error: Value not found in dictionary."
+    assert test.get_body().decode() == "Error: Value not found in HemeraHttpRequest."
     assert test.status_code == 400
 
 
