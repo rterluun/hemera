@@ -1,0 +1,46 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry]
+name = "hemera"
+version = "0.0.0"
+description = "A Repository for the Hemera Project"
+authors = ["rterluun"]
+readme = "README.md"
+packages = [
+  { include = "hemera", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+azure-functions = "^1.17.0"
+slack_sdk = "^3.26.0"
+requests = "^2.31.0"
+
+[tool.poetry.dev-dependencies]
+coverage = {extras = ["toml"], version = "^7.3.2"}
+pytest = "^7.4.3"
+pre-commit = "^3.5.0"
+isort = "^5.12.0"
+black = "^23.11.0"
+requests-mock = "^1.11.0"
+toml = "^0.10.2"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = [
+  ".", "src",
+]
+
+[tool.isort]
+profile = "black"
+src_paths = [".", "src", "tests"]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+metadata = true
+tagged-metadata = true
