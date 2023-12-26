@@ -12,7 +12,16 @@ def send_request_to_homeautomation_webhook(
     message: str,
     logger: Logger = LOGGER,
 ) -> None:
-    """Run the Home Automation webhook."""
+    """Send a request to the Home Automation webhook.
+
+    Args:
+        homeautomation_webhook (str): The Home Automation webhook.
+        message (str): The message to send.
+        logger (Logger, optional): The logger. Defaults to LOGGER.
+
+    Raises:
+        HomeAutomationWebhookError: When an error occurs when running the Home Automation webhook.
+    """
     try:
         response = post(
             url=homeautomation_webhook,

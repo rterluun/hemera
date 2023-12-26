@@ -5,6 +5,7 @@ from hemera.types import HemeraHttpRequest, HemeraMetadata
 
 
 def test_hemera_http_request_exceptions():
+    """Test HemeraHttpRequest exceptions."""
     http_request = HemeraHttpRequest()
 
     with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
@@ -18,6 +19,7 @@ def test_hemera_http_request_exceptions():
 
 
 def test_hemera_meta_data_exceptions():
+    """Test HemeraMetadata exceptions."""
     hemera_meta_data = HemeraMetadata()
 
     with pytest.raises(HemeraError, match="Value not found in HemeraMetadata."):

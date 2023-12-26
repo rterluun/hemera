@@ -8,8 +8,7 @@ LOGGER = getLogger(__name__)
 
 
 class AutomationHandler:
-    """A class to handle automation tasks such as sending messages to Slack and
-    triggering home automation webhooks."""
+    """Class to handle automation."""
 
     def __init__(
         self,
@@ -21,10 +20,10 @@ class AutomationHandler:
         """Initialize an instance of the AutomationHandler class.
 
         Args:
-            slack_api_token (str): The API token for Slack.
-            slack_channel (str): The Slack channel to send messages to.
-            homeautomation_webhook (str): The webhook URL for the home automation system.
-            logger (Logger, optional): The logger to use. Defaults to LOGGER.
+            slack_api_token (str): The Slack API token.
+            slack_channel (str): The Slack channel.
+            homeautomation_webhook (str): The Home Automation webhook.
+            logger (Logger, optional): The logger. Defaults to LOGGER.
         """
         self.slack_api_token = slack_api_token
         self.slack_channel = slack_channel
@@ -36,10 +35,10 @@ class AutomationHandler:
         self,
         hemera_http_request: HemeraHttpRequest,
     ):
-        """Create a Slack message based on the HemeraHttpRequest.
+        """Create a Slack message from the HemeraHttpRequest and store it in.
 
         Args:
-            http_request_dict (dict): The HTTP request dictionary to create the Slack message from.
+            hemera_http_request (HemeraHttpRequest): The Hemera HTTP request.
         """
         self.message = create_slack_message(
             hemera_http_request=hemera_http_request,
@@ -47,8 +46,7 @@ class AutomationHandler:
         )
 
     def _send_slack_message(self):
-        """Send a Slack message using the Slack API token, channel, and message
-        stored in this instance."""
+        """Send the Slack message stored in this instance."""
         send_slack_message(
             slack_api_token=self.slack_api_token,
             channel=self.slack_channel,
@@ -57,8 +55,7 @@ class AutomationHandler:
         )
 
     def _send_request_to_homeautomation_webhook(self):
-        """Send a request to the home automation webhook using the webhook URL
-        and message stored in this instance."""
+        """Send a request to the Home Automation webhook."""
         send_request_to_homeautomation_webhook(
             homeautomation_webhook=self.homeautomation_webhook,
             message=self.message,
@@ -69,12 +66,10 @@ class AutomationHandler:
         self,
         hemera_http_request: HemeraHttpRequest,
     ):
-        """Handle an HTTP request by creating a Slack message from the
-        HemeraHttpRequest, sending the Slack message, and sending a request to
-        the home automation webhook.
+        """Handle a request.
 
         Args:
-            http_request_dict (dict): The HTTP request dictionary to create the Slack message from.
+            hemera_http_request (HemeraHttpRequest): The Hemera HTTP request.
         """
         self._create_slack_message(hemera_http_request=hemera_http_request)
         self._send_slack_message()

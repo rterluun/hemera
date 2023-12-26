@@ -9,6 +9,7 @@ from github import main as github_api
 
 
 def test_github_api_environment_variables_not_set(test_request: func.HttpRequest):
+    """Test github_api when environment variables are not set."""
     os_environ.pop("SLACK_API_TOKEN", None)
 
     test = github_api(req=test_request)
@@ -17,6 +18,7 @@ def test_github_api_environment_variables_not_set(test_request: func.HttpRequest
 
 
 def test_github_api_value_not_found():
+    """Test github_api when a value is not found in a dictionary."""
     test = github_api(
         req=func.HttpRequest(
             method="POST",
@@ -37,6 +39,7 @@ def test_github_api_message_sent_to_slack_successfully(
     api_call: MagicMock,
     test_request: func.HttpRequest,
 ):
+    """Test github_api when the message is sent to Slack successfully."""
     with requests_mock.Mocker() as m:
         m.post("http://fakeurl.com", text="OK")
 
@@ -59,6 +62,7 @@ def test_github_api_message_sent_to_slack_successfully(
 
 
 def test_github_api_username_not_allowed(test_request: func.HttpRequest):
+    """Test github_api when the username is not allowed."""
     os_environ["ALLOWED_USERNAME"] = "fake_username"
 
     test = github_api(req=test_request)

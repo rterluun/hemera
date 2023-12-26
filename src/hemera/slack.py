@@ -13,8 +13,19 @@ def create_slack_message(
     hemera_http_request: HemeraHttpRequest,
     logger: Logger = LOGGER,
 ) -> str:
-    """Convert an Azure Functions HTTP request to a Slack message."""
-    logger.info("Converting HTTP request dictionary to Slack message.")
+    """Create a Slack message from the HemeraHttpRequest.
+
+    Args:
+        hemera_http_request (HemeraHttpRequest): The Hemera HTTP request.
+        logger (Logger, optional): The logger. Defaults to LOGGER.
+
+    Raises:
+        ValueNotFoundInHemeraHttpRequest: When a value is not found in the HemeraHttpRequest.
+
+    Returns:
+        str: The Slack message.
+    """
+    logger.info("Creating Slack message.")
 
     try:
         return (
@@ -34,7 +45,20 @@ def send_slack_message(
     message: str,
     logger: Logger = LOGGER,
 ) -> SlackResponse:
-    """Send a message to a Slack channel."""
+    """Send a message to Slack.
+
+    Args:
+        slack_api_token (str): The Slack API token.
+        channel (str): The Slack channel.
+        message (str): The message to send.
+        logger (Logger, optional): The logger. Defaults to LOGGER.
+
+    Raises:
+        SlackApiError: When an error occurs when sending a message to Slack.
+
+    Returns:
+        SlackResponse: The Slack response.
+    """
     try:
         client = WebClient(token=slack_api_token)
         response = client.chat_postMessage(channel=channel, text=message)

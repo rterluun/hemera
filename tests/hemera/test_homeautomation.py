@@ -5,6 +5,7 @@ from hemera.homeautomation import send_request_to_homeautomation_webhook
 
 
 def test_send_request_to_homeautomation_webhook_error() -> None:
+    """Test send_request_to_homeautomation_webhook error."""
     pytest.raises(
         HemeraError,
         send_request_to_homeautomation_webhook,
