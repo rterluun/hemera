@@ -31,7 +31,8 @@ class HomeAutomationWebhookError(HemeraError):
 
 
 class UnauthorizedUserError(HemeraError):
-    """Raised when an unauthorized user attempts to run the Home Automation webhook."""
+    """Raised when an unauthorized user attempts to run the Home Automation
+    webhook."""
 
     def __init__(self):
         raise HemeraError("Unauthorized user.")

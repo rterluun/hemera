@@ -21,7 +21,8 @@ def convert_http_request(
     req: func.HttpRequest,
     logger: Logger = LOGGER,
 ) -> HttpRequest:
-    """Convert an Azure Functions HTTP request to a hemera.types.HttpRequest dictionary."""
+    """Convert an Azure Functions HTTP request to a hemera.types.HttpRequest
+    dictionary."""
 
     http_request = HttpRequest(
         header=convert_http_request_headers(req=req),

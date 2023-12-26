@@ -49,7 +49,8 @@ class HemeraHttpRequest:
         req,
         logger: Logger = LOGGER,
     ):
-        """Create an instance of the HemeraHttpRequest class from an Azure Functions HTTP request."""
+        """Create an instance of the HemeraHttpRequest class from an Azure
+        Functions HTTP request."""
         return cls(
             req=convert_http_request(
                 req=req,
