@@ -50,3 +50,10 @@ class ValueNotFoundInHemeraMetadata(HemeraError):
 
     def __init__(self):
         raise HemeraError("Value not found in HemeraMetadata.")
+
+
+class AutomationHandlerException(HemeraError):
+    """Raised when an error occurs in the AutomationHandler class."""
+
+    def __init__(self):
+        raise HemeraError("Error in AutomationHandler class.")
