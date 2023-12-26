@@ -4,7 +4,7 @@ from os import environ as os_environ
 import azure.functions as func
 import pytest
 
-from hemera.datatypes import HttpRequest
+from hemera.dataclasses import HttpRequest
 from hemera.types import HemeraHttpRequest
 from tests.hemera.resources.http_request_data import BODY, HEADER
 

@@ -4,7 +4,7 @@ from typing import Dict
 
 @dataclass
 class HttpRequest:
-    """Dataclass for HTTP request data."""
+    """Dataclass for Hemera HTTP request."""
 
     header: Dict[str, str]
     body: Dict[str, object]

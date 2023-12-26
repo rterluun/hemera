@@ -2,7 +2,7 @@ from logging import Logger, getLogger
 
 import azure.functions as func
 
-from hemera.datatypes import HttpRequest
+from hemera.dataclasses import HttpRequest
 
 LOGGER = getLogger(__name__)
 

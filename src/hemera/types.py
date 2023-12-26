@@ -1,6 +1,6 @@
 from logging import Logger, getLogger
 
-from hemera.datatypes import HttpRequest, Metadata
+from hemera.dataclasses import HttpRequest, Metadata
 from hemera.exceptions import (
     ValueNotFoundInHemeraHttpRequest,
     ValueNotFoundInHemeraMetadata,

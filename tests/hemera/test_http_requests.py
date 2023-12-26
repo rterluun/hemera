@@ -1,6 +1,6 @@
 import azure.functions as func
 
-from hemera.datatypes import HttpRequest
+from hemera.dataclasses import HttpRequest
 from hemera.http_request_handler import (
     convert_http_request,
     convert_http_request_body,
