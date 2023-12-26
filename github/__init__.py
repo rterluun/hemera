@@ -15,7 +15,20 @@ LOGGER = getLogger(__name__)
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
+    """Azure Function entry point.
+
+    Args:
+        req (func.HttpRequest): The incoming HTTP request.
+
+    Raises:
+        EnvironmentVariableNotSetError: When environment variables are not set.
+        UnauthorizedUserError: When the user is not whitelisted.
+
+    Returns:
+        func.HttpResponse: The outgoing HTTP response.
+    """
     LOGGER.info("Python HTTP trigger function processed a request.")
+
     slack_api_token = os_getenv("SLACK_API_TOKEN")
     slack_channel = os_getenv("SLACK_CHANNEL")
     homeautomation_webhook = os_getenv("HOMEAUTOMATION_WEBHOOK")
@@ -49,4 +62,4 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except HemeraError as e:
         return func.HttpResponse(f"Error: {e}", status_code=400)
 
-    return func.HttpResponse("Message sent to Slack successfully.", status_code=200)
+    return func.HttpResponse("Automation executed successfully.", status_code=200)
