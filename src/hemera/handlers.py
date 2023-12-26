@@ -1,5 +1,6 @@
 from logging import Logger, getLogger
 
+from hemera.exceptions import HemeraError
 from hemera.homeautomation import send_request_to_homeautomation_webhook
 from hemera.slack import create_slack_message, send_slack_message
 from hemera.types import HemeraHttpRequest
@@ -40,27 +41,35 @@ class AutomationHandler:
         Args:
             hemera_http_request (HemeraHttpRequest): The Hemera HTTP request.
         """
-        self.message = create_slack_message(
-            hemera_http_request=hemera_http_request,
-            logger=self.logger,
-        )
+        self.logger.info("Creating Slack message.")
+        try:
+            self.message = create_slack_message(hemera_http_request=hemera_http_request)
+        except HemeraError as e:
+            self.logger.error("Error creating Slack message, %s", e)
 
     def _send_slack_message(self):
         """Send the Slack message stored in this instance."""
-        send_slack_message(
-            slack_api_token=self.slack_api_token,
-            channel=self.slack_channel,
-            message=self.message,
-            logger=self.logger,
-        )
+        self.logger.info("Sending Slack message.")
+        try:
+            send_slack_message(
+                slack_api_token=self.slack_api_token,
+                channel=self.slack_channel,
+                message=self.message,
+            )
+        except HemeraError as e:
+            self.logger.error("Error sending Slack message, %s", e)
 
     def _send_request_to_homeautomation_webhook(self):
         """Send a request to the Home Automation webhook."""
-        send_request_to_homeautomation_webhook(
-            homeautomation_webhook=self.homeautomation_webhook,
-            message=self.message,
-            logger=self.logger,
-        )
+        self.logger.info("Sending request to Home Automation webhook.")
+
+        try:
+            send_request_to_homeautomation_webhook(
+                homeautomation_webhook=self.homeautomation_webhook,
+                message=self.message,
+            )
+        except HemeraError as e:
+            self.logger.error("Error sending request to Home Automation webhook, %s", e)
 
     def handle_request(
         self,
@@ -71,6 +80,7 @@ class AutomationHandler:
         Args:
             hemera_http_request (HemeraHttpRequest): The Hemera HTTP request.
         """
+        self.logger.info("Handling request.")
         self._create_slack_message(hemera_http_request=hemera_http_request)
         self._send_slack_message()
         self._send_request_to_homeautomation_webhook()

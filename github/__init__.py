@@ -40,7 +40,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             or not slack_channel
             or not homeautomation_webhook
             or not allowed_username
-        ):  # Check if environment variables are set
+        ):
             raise EnvironmentVariableNotSetError
 
         hemera_http_request = HemeraHttpRequest.from_azure_functions_http_request(
@@ -60,6 +60,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         automation_handler.handle_request(hemera_http_request=hemera_http_request)
 
     except HemeraError as e:
+        LOGGER.error("Error: %s", e)
         return func.HttpResponse(f"Error: {e}", status_code=400)
 
+    LOGGER.info("Python HTTP trigger function executed successfully.")
     return func.HttpResponse("Automation executed successfully.", status_code=200)
