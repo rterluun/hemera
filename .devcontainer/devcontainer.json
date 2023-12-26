@@ -10,17 +10,18 @@
 "customizations": {
 	"vscode": {
 		"extensions": [
-			"ms-azuretools.vscode-azurefunctions",
-			"ms-python.python",
-			"GitHub.copilot",
-			"GitHub.copilot-chat",
-			"github.vscode-github-actions",
-			"ms-python.pylint",
-			"ms-python.black-formatter",
-			"ms-azuretools.vscode-docker",
-			"eamodio.gitlens",
-			"GitHub.vscode-pull-request-github"
-		]
+      "ms-azuretools.vscode-azurefunctions",
+      "ms-python.python",
+      "GitHub.copilot",
+      "GitHub.copilot-chat",
+      "github.vscode-github-actions",
+      "ms-python.pylint",
+      "ms-python.black-formatter",
+      "ms-azuretools.vscode-docker",
+      "eamodio.gitlens",
+      "GitHub.vscode-pull-request-github",
+      "njpwerner.autodocstring"
+    ]
 	}
 }
 
