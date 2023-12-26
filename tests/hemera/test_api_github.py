@@ -54,7 +54,7 @@ def test_github_api_message_sent_to_slack_successfully(
             },
         )
 
-        assert test.get_body().decode() == "Message sent to Slack successfully."
+        assert test.get_body().decode() == "Automation executed successfully."
         assert test.status_code == 200
 
 
