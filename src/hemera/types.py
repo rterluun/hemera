@@ -1,6 +1,6 @@
 from logging import Logger, getLogger
 
-from hemera.dataclasses import HttpRequest, Metadata
+from hemera.dataclasses import HttpRequest, Metadata, PythonVersion
 from hemera.exceptions import (
     ValueNotFoundInHemeraHttpRequest,
     ValueNotFoundInHemeraMetadata,
@@ -14,20 +14,35 @@ LOGGER = getLogger(__name__)
 class HemeraMetadata:
     """A class to represent Hemera metadata."""
 
-    def __init__(self, versions: Metadata = Metadata(python={})):
-        """Initialize an instance of the HemeraMetadata class."""
+    def __init__(self, versions: Metadata = Metadata(python=PythonVersion(package={}))):
+        """Initialize an instance of the HemeraMetadata class.
+
+        Args:
+            versions (Metadata, optional): The versions. Defaults to Metadata(python=PythonVersion(package={})).
+        """
         self.versions: Metadata = versions
 
     @classmethod
-    def _from_runtime(cls):
-        """Create an instance of the HemeraMetadata class from the runtime."""
-        return cls(versions=Metadata(python=get_software_versions("hemera")))
+    def _from_runtime(cls) -> "HemeraMetadata":
+        """Create an instance of the HemeraMetadata class from the runtime.
+
+        Returns:
+            HemeraMetadata: An instance of the HemeraMetadata class.
+        """
+        return cls(versions=Metadata(get_software_versions("hemera")))
 
     @property
-    def core(self):
-        """Return the version of Hemera."""
+    def core(self) -> str:
+        """Return the version of the Hemera core package.
+
+        Raises:
+            ValueNotFoundInHemeraMetadata: When the version of the Hemera core package is not found.
+
+        Returns:
+            str: The version of the Hemera core package.
+        """
         try:
-            return self.versions.python["hemera"]
+            return self.versions.python.package["hemera"]
         except KeyError as e:
             raise ValueNotFoundInHemeraMetadata from e
 

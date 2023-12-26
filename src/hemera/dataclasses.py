@@ -11,7 +11,14 @@ class HttpRequest:
 
 
 @dataclass
+class PythonVersion:
+    """Dataclass for Python versions."""
+
+    package: Dict[str, str]
+
+
+@dataclass
 class Metadata:
     """Dataclass for Hemera metadata."""
 
-    python: Dict[str, str]
+    python: PythonVersion
