@@ -1,5 +1,11 @@
 name: Unit tests and building docker image
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - master
+    tags-ignore:
+      - '*'
+  pull_request:
 
 jobs:
   tests:
