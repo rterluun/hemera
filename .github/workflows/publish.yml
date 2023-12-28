@@ -25,3 +25,4 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG}}
+        labels: LABEL org.opencontainers.image.source https://github.com/${{ github.repository }}
