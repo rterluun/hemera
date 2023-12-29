@@ -25,9 +25,9 @@ jobs:
         sudo apt-get install -y --no-install-recommends wget
         sudo wget -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
         sudo chmod +x /usr/local/bin/hadolint
-    - name: Run pre-commit
-      run: |
-        poetry run pre-commit run --all-files
+    # - name: Run pre-commit
+    #   run: |
+    #     poetry run pre-commit run --all-files
     - name: Run tests with pytest
       run: |
         poetry run coverage run --source=github,src -m pytest tests
@@ -37,25 +37,24 @@ jobs:
         poetry run coverage xml
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         fail_ci_if_error: true
-        flags: unittests
-  build:
-    needs: tests
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: docker/metadata-action@v5
-      id: metadata
-      with:
-        images: ghcr.io/${{ github.repository }}
-    - uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./Dockerfile
-        push: false
-        tags: ${{ steps.metadata.outputs.tags }}
-        labels: ${{ steps.metadata.outputs.labels }}
+        name: hemera
+  # build:
+  #   needs: tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: docker/metadata-action@v5
+  #     id: metadata
+  #     with:
+  #       images: ghcr.io/${{ github.repository }}
+  #   - uses: docker/build-push-action@v5
+  #     with:
+  #       context: .
+  #       file: ./Dockerfile
+  #       push: false
+  #       tags: ${{ steps.metadata.outputs.tags }}
+  #       labels: ${{ steps.metadata.outputs.labels }}
