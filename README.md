@@ -1,5 +1,9 @@
 # Hemera
 
+[![Tests](https://github.com/rterluun/hemera/actions/workflows/test-and-build.yml/badge.svg?branch=master)](https://github.com/rterluun/hemera/actions/workflows/test-and-build.yml)
+[![Build](https://github.com/rterluun/hemera/actions/workflows/publish.yml/badge.svg?branch=master)](https://github.com/rterluun/hemera/actions/workflows/publish.yml)
+[![codecov](https://codecov.io/gh/rterluun/hemera/branch/master/graph/badge.svg?token=XCGA8T1H4G)](https://codecov.io/gh/rterluun/hemera)
+
 Hemera is a Python library for handling HTTP requests in a serverless environment.
 It was designed to send a notification to a Slack channel when a new GitHub Pull Request is created and make my lights blink by sending a request to my Home Assistant instance.
 

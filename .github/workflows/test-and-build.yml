@@ -1,4 +1,4 @@
-name: Unit tests and building docker image
+name: Tests
 on:
   push:
     branches-ignore:
@@ -34,6 +34,12 @@ jobs:
     - name: Coverage report
       run: |
         poetry run coverage report -m
+        poetry run coverage xml
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4-beta
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
   build:
     needs: tests
     runs-on: ubuntu-latest
