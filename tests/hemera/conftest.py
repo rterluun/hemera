@@ -45,3 +45,10 @@ def set_env_vars():
     os_environ.pop("SLACK_CHANNEL", None)
     os_environ.pop("HOMEAUTOMATION_WEBHOOK", None)
     os_environ.pop("ALLOWED_USERNAME", None)
+
+
+@pytest.fixture
+def incorrect_github_event_header():
+    header = HEADER.copy()
+    header["x-github-event"] = "incorrect_event"
+    return header
