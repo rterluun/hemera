@@ -5,6 +5,7 @@ import azure.functions as func
 
 from hemera.exceptions import (
     EnvironmentVariableNotSetError,
+    GithubEventNotSupportedError,
     HemeraError,
     UnauthorizedUserError,
 )
@@ -46,6 +47,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         hemera_http_request = HemeraHttpRequest.from_azure_functions_http_request(
             req=req, logger=LOGGER
         )
+
+        if hemera_http_request.githubevent != "pull_request":
+            raise GithubEventNotSupportedError
 
         if hemera_http_request.username != allowed_username:
             raise UnauthorizedUserError
