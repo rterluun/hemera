@@ -1,4 +1,5 @@
 from logging import Logger, getLogger
+from typing import Any, List
 
 import azure.functions as func
 
@@ -87,163 +88,91 @@ class HemeraHttpRequest:
             ),
         )
 
-    @property
-    def username(self) -> str:
-        """Return the username of the user who performed the action on the
-        repository.
+    def _get_property_value(self, source: str, keys: List[str]) -> Any:
+        """Return the value of a property.
+
+        Args:
+            source (str): The source of the property. Either "header" or "body".
+            keys (List[str]): The keys to access the property.
 
         Raises:
-            ValueNotFoundInHemeraHttpRequest: When the username of the user
-                who performed the action on the repository is not found.
+            ValueNotFoundInHemeraHttpRequest: When the value of the property is not found.
 
         Returns:
-            str: The username of the user who performed the action on the repository.
+            Any: The value of the property.
         """
         try:
-            body: dict = self.req.body
-            return body["pull_request"]["user"]["login"]
-            # Fields that contains a username:
-            # body["pull_request"]["user"]["login"]
-            # body["pull_request"]["head"]["user"]["login"]
-            # body["pull_request"]["head"]["repo"]["owner"]["login"]
-            # body["pull_request"]["base"]["user"]["login"]
-            # body["pull_request"]["base"]["repo"]["owner"]["login"]
-            # body["repository"]["owner"]["login"]
-            # body["sender"]["login"]
+            value = getattr(self.req, source)
+            for key in keys:
+                value = value[key]
+            return value
         except KeyError as e:
             raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def username(self) -> str:
+        """Return the username."""
+        return self._get_property_value(
+            source="body", keys=["pull_request", "user", "login"]
+        )
+        # Fields that contains a username:
+        # body["pull_request"]["user"]["login"]
+        # body["pull_request"]["head"]["user"]["login"]
+        # body["pull_request"]["head"]["repo"]["owner"]["login"]
+        # body["pull_request"]["base"]["user"]["login"]
+        # body["pull_request"]["base"]["repo"]["owner"]["login"]
+        # body["repository"]["owner"]["login"]
+        # body["sender"]["login"]
 
     @property
     def action(self) -> object:
-        """Return the action performed on the repository.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the action performed on the repository is not found.
-
-        Returns:
-            object: The action performed on the repository.
-        """
-        try:
-            body: dict = self.req.body
-            return body["action"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the action."""
+        return self._get_property_value(source="body", keys=["action"])
 
     @property
     def repository(self) -> str:
-        """Return the full name of the repository.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the full name of the repository is not found.
-
-        Returns:
-            str: The full name of the repository.
-        """
-        try:
-            body: dict = self.req.body
-            return body["repository"]["full_name"]
-            # Fields that contains a repository name:
-            # body["pull_request"]["head"]["repo"]["full_name"]
-            # body["pull_request"]["base"]["repo"]["full_name"]
-            # body["repository"]["full_name"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the repository name."""
+        return self._get_property_value(source="body", keys=["repository", "full_name"])
+        # Fields that contains a repository name:
+        # body["pull_request"]["head"]["repo"]["full_name"]
+        # body["pull_request"]["base"]["repo"]["full_name"]
+        # body["repository"]["full_name"]
 
     @property
     def githubevent(self) -> str:
-        """Return the GitHub event type.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the GitHub event type is not found.
-
-        Returns:
-            str: The GitHub event type.
-        """
-        try:
-            header: dict = self.req.header
-            return header["x-github-event"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the GitHub event."""
+        return self._get_property_value(source="header", keys=["x-github-event"])
 
     @property
     def pullrequesturl(self) -> str:
-        """Return the pull request URL.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the pull request URL is not found.
-
-        Returns:
-            str: The pull request URL.
-        """
-        try:
-            body: dict = self.req.body
-            return body["pull_request"]["html_url"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the pull request URL."""
+        return self._get_property_value(
+            source="body", keys=["pull_request", "html_url"]
+        )
 
     @property
     def pullrequestnumber(self) -> str:
-        """Return the pull request number.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the pull request number is not found.
-
-        Returns:
-            str: The pull request number.
-        """
-        try:
-            body: dict = self.req.body
-            return body["pull_request"]["number"]
-            # Fields that contains a pull request number:
-            # body["pull_request"]["number"]
-            # body["number"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the pull request number."""
+        return self._get_property_value(source="body", keys=["pull_request", "number"])
+        # Fields that contains a pull request number:
+        # body["pull_request"]["number"]
+        # body["number"]
 
     @property
     def pullrequesttitle(self) -> str:
-        """Return the pull request title.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the pull request title is not found.
-
-        Returns:
-            str: The pull request title.
-        """
-        try:
-            body: dict = self.req.body
-            return body["pull_request"]["title"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the pull request title."""
+        return self._get_property_value(source="body", keys=["pull_request", "title"])
 
     @property
     def pullrequesttargetbranch(self) -> str:
-        """Return the pull request target branch.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the pull request target branch is not found.
-
-        Returns:
-            str: The pull request target branch.
-        """
-        try:
-            body: dict = self.req.body
-            return body["pull_request"]["base"]["ref"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the pull request target branch."""
+        return self._get_property_value(
+            source="body", keys=["pull_request", "base", "ref"]
+        )
 
     @property
     def pullrequestsourcebranch(self) -> str:
-        """Return the pull request source branch.
-
-        Raises:
-            ValueNotFoundInHemeraHttpRequest: When the pull request source branch is not found.
-
-        Returns:
-            str: The pull request source branch.
-        """
-        try:
-            body: dict = self.req.body
-            return body["pull_request"]["head"]["ref"]
-        except KeyError as e:
-            raise ValueNotFoundInHemeraHttpRequest from e
+        """Return the pull request source branch."""
+        return self._get_property_value(
+            source="body", keys=["pull_request", "head", "ref"]
+        )
