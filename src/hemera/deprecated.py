@@ -19,7 +19,15 @@ LOGGER = getLogger(__name__)
 def scan_for_deprecated_env_vars(
     deprecated_env_vars: list, logger: Logger = LOGGER
 ) -> None:
-    """Scan for deprecated environment variables."""
+    """Scan for deprecated environment variables.
+
+    Args:
+        deprecated_env_vars (list): The deprecated environment variables.
+        logger (Logger, optional): The logger. Defaults to LOGGER.
+
+    Raises:
+        EnvironmentVariableDeprecatedError: Raised when an environment variable is deprecated.
+    """
 
     hemera_version = get_software_versions(distribution="hemera").package["hemera"]
 
