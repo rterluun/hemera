@@ -3,6 +3,10 @@ from os import getenv as os_getenv
 
 import azure.functions as func
 
+from hemera.deprecated import (
+    DEPRECATEDENVIRIONMENTVARIABLES,
+    scan_for_deprecated_env_vars,
+)
 from hemera.exceptions import (
     EnvironmentVariableNotSetError,
     GithubEventNotSupportedError,
@@ -33,14 +37,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     slack_api_token = os_getenv("SLACK_API_TOKEN")
     slack_channel = os_getenv("SLACK_CHANNEL")
     homeautomation_webhook = os_getenv("HOMEAUTOMATION_WEBHOOK")
-    allowed_username = os_getenv("ALLOWED_USERNAME")
+    pr_author_filter = os_getenv("PR_AUTHOR_FILTER") or os_getenv("ALLOWED_USERNAME")
 
     try:
+        scan_for_deprecated_env_vars(
+            deprecated_env_vars=DEPRECATEDENVIRIONMENTVARIABLES, logger=LOGGER
+        )
+
         if (
             not slack_api_token
             or not slack_channel
             or not homeautomation_webhook
-            or not allowed_username
+            or not pr_author_filter
         ):
             raise EnvironmentVariableNotSetError
 
@@ -51,7 +59,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         if hemera_http_request.githubevent != "pull_request":
             raise GithubEventNotSupportedError
 
-        if hemera_http_request.username != allowed_username:
+        if hemera_http_request.username != pr_author_filter:
             raise UnauthorizedUserError
 
         automation_handler = AutomationHandler(
