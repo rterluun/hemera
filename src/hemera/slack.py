@@ -23,9 +23,12 @@ def create_slack_message(hemera_http_request: HemeraHttpRequest) -> str:
     """
     try:
         return (
-            f"The following action [{hemera_http_request.action}] "
-            f"was performed on the repository: {hemera_http_request.repository}\n"
-            f"The action was performed by: {hemera_http_request.username}\n"
+            f"{hemera_http_request.username} {hemera_http_request.action} a {hemera_http_request.githubevent}\n"
+            f"<{hemera_http_request.pullrequesturl}|"
+            f"{hemera_http_request.pullrequestnumber}: {hemera_http_request.pullrequesttitle}>\n"
+            f"Target branch: {hemera_http_request.pullrequesttargetbranch}; "
+            f"Source branch: {hemera_http_request.pullrequestsourcebranch}\n"
+            f"Repository: {hemera_http_request.repository}\n"
             f"Created by Hemera v{hemera_http_request.metadata.core}"
         )
     except Exception as e:

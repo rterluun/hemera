@@ -100,7 +100,16 @@ class HemeraHttpRequest:
             str: The username of the user who performed the action on the repository.
         """
         try:
-            return self.req.body["sender"]["login"]  # type: ignore
+            body: dict = self.req.body
+            return body["pull_request"]["user"]["login"]
+            # Fields that contains a username:
+            # body["pull_request"]["user"]["login"]
+            # body["pull_request"]["head"]["user"]["login"]
+            # body["pull_request"]["head"]["repo"]["owner"]["login"]
+            # body["pull_request"]["base"]["user"]["login"]
+            # body["pull_request"]["base"]["repo"]["owner"]["login"]
+            # body["repository"]["owner"]["login"]
+            # body["sender"]["login"]
         except KeyError as e:
             raise ValueNotFoundInHemeraHttpRequest from e
 
@@ -115,7 +124,8 @@ class HemeraHttpRequest:
             object: The action performed on the repository.
         """
         try:
-            return self.req.body["action"]
+            body: dict = self.req.body
+            return body["action"]
         except KeyError as e:
             raise ValueNotFoundInHemeraHttpRequest from e
 
@@ -130,6 +140,110 @@ class HemeraHttpRequest:
             str: The full name of the repository.
         """
         try:
-            return self.req.body["repository"]["full_name"]  # type: ignore
+            body: dict = self.req.body
+            return body["repository"]["full_name"]
+            # Fields that contains a repository name:
+            # body["pull_request"]["head"]["repo"]["full_name"]
+            # body["pull_request"]["base"]["repo"]["full_name"]
+            # body["repository"]["full_name"]
+        except KeyError as e:
+            raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def githubevent(self) -> str:
+        """Return the GitHub event type.
+
+        Raises:
+            ValueNotFoundInHemeraHttpRequest: When the GitHub event type is not found.
+
+        Returns:
+            str: The GitHub event type.
+        """
+        try:
+            header: dict = self.req.header
+            return header["x-github-event"]
+        except KeyError as e:
+            raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def pullrequesturl(self) -> str:
+        """Return the pull request URL.
+
+        Raises:
+            ValueNotFoundInHemeraHttpRequest: When the pull request URL is not found.
+
+        Returns:
+            str: The pull request URL.
+        """
+        try:
+            body: dict = self.req.body
+            return body["pull_request"]["html_url"]
+        except KeyError as e:
+            raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def pullrequestnumber(self) -> str:
+        """Return the pull request number.
+
+        Raises:
+            ValueNotFoundInHemeraHttpRequest: When the pull request number is not found.
+
+        Returns:
+            str: The pull request number.
+        """
+        try:
+            body: dict = self.req.body
+            return body["pull_request"]["number"]
+            # Fields that contains a pull request number:
+            # body["pull_request"]["number"]
+            # body["number"]
+        except KeyError as e:
+            raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def pullrequesttitle(self) -> str:
+        """Return the pull request title.
+
+        Raises:
+            ValueNotFoundInHemeraHttpRequest: When the pull request title is not found.
+
+        Returns:
+            str: The pull request title.
+        """
+        try:
+            body: dict = self.req.body
+            return body["pull_request"]["title"]
+        except KeyError as e:
+            raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def pullrequesttargetbranch(self) -> str:
+        """Return the pull request target branch.
+
+        Raises:
+            ValueNotFoundInHemeraHttpRequest: When the pull request target branch is not found.
+
+        Returns:
+            str: The pull request target branch.
+        """
+        try:
+            body: dict = self.req.body
+            return body["pull_request"]["base"]["ref"]
+        except KeyError as e:
+            raise ValueNotFoundInHemeraHttpRequest from e
+
+    @property
+    def pullrequestsourcebranch(self) -> str:
+        """Return the pull request source branch.
+
+        Raises:
+            ValueNotFoundInHemeraHttpRequest: When the pull request source branch is not found.
+
+        Returns:
+            str: The pull request source branch.
+        """
+        try:
+            body: dict = self.req.body
+            return body["pull_request"]["head"]["ref"]
         except KeyError as e:
             raise ValueNotFoundInHemeraHttpRequest from e

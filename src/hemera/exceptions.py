@@ -57,3 +57,10 @@ class AutomationHandlerException(HemeraError):
 
     def __init__(self):
         raise HemeraError("Error in AutomationHandler class.")
+
+
+class GithubEventNotSupportedError(HemeraError):
+    """Raised when a GitHub event is not supported."""
+
+    def __init__(self):
+        raise HemeraError("GitHub event not supported.")

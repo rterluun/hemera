@@ -50,8 +50,10 @@ def test_github_api_message_sent_to_slack_successfully(
             json={
                 "channel": "fake_channel",
                 "text": (
-                    "The following action [reopened] was performed on the repository: "
-                    "username/repository_name\nThe action was performed by: username\n"
+                    "username reopened a pull_request\n"
+                    "<http://fakeurl.com|17: PR title>\n"
+                    "Target branch: master; Source branch: branch_name\n"
+                    "Repository: username/repository_name\n"
                     "Created by Hemera v0.0.0"
                 ),
             },
@@ -67,4 +69,20 @@ def test_github_api_username_not_allowed(test_request: func.HttpRequest):
 
     test = github_api(req=test_request)
     assert test.get_body().decode() == "Error: Unauthorized user."
+    assert test.status_code == 400
+
+
+def test_github_event_not_supported_error(incorrect_github_event_header: dict):
+    """Test github_api when the event is not supported."""
+    test = github_api(
+        req=func.HttpRequest(
+            method="POST",
+            url="/",
+            headers=incorrect_github_event_header,
+            params={},
+            route_params={},
+            body=json.dumps({}).encode("utf-8"),
+        )
+    )
+    assert test.get_body().decode() == "Error: GitHub event not supported."
     assert test.status_code == 400

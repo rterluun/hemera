@@ -17,6 +17,21 @@ def test_hemera_http_request_exceptions():
     with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
         _ = http_request.repository
 
+    with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
+        _ = http_request.pullrequesturl
+
+    with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
+        _ = http_request.pullrequestnumber
+
+    with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
+        _ = http_request.pullrequesttitle
+
+    with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
+        _ = http_request.pullrequesttargetbranch
+
+    with pytest.raises(HemeraError, match="Value not found in HemeraHttpRequest."):
+        _ = http_request.pullrequestsourcebranch
+
 
 def test_hemera_meta_data_exceptions():
     """Test HemeraMetadata exceptions."""
