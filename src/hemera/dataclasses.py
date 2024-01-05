@@ -22,3 +22,12 @@ class Metadata:
     """Dataclass for Hemera metadata."""
 
     python: PythonVersion
+
+
+@dataclass
+class DeprecatedEnvirionmentVariable:
+    """Dataclass for deprecated environment variables."""
+
+    name: str
+    deprecated_in_hemera_version: str
+    replacement: str

@@ -65,7 +65,7 @@ def test_github_api_message_sent_to_slack_successfully(
 
 def test_github_api_username_not_allowed(test_request: func.HttpRequest):
     """Test github_api when the username is not allowed."""
-    os_environ["ALLOWED_USERNAME"] = "fake_username"
+    os_environ["PR_AUTHOR_FILTER"] = "fake_username"
 
     test = github_api(req=test_request)
     assert test.get_body().decode() == "Error: Unauthorized user."

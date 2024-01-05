@@ -64,3 +64,10 @@ class GithubEventNotSupportedError(HemeraError):
 
     def __init__(self):
         raise HemeraError("GitHub event not supported.")
+
+
+class EnvironmentVariableDeprecatedError(HemeraError):
+    """Raised when an environment variable is deprecated."""
+
+    def __init__(self, env_var_name: str):
+        super().__init__(f"Environment variable {env_var_name} is deprecated.")

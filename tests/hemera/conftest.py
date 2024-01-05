@@ -37,14 +37,14 @@ def set_env_vars():
     os_environ["SLACK_API_TOKEN"] = "fake_token"
     os_environ["SLACK_CHANNEL"] = "fake_channel"
     os_environ["HOMEAUTOMATION_WEBHOOK"] = "http://fakeurl.com"
-    os_environ["ALLOWED_USERNAME"] = "username"
+    os_environ["PR_AUTHOR_FILTER"] = "username"
 
     yield
 
     os_environ.pop("SLACK_API_TOKEN", None)
     os_environ.pop("SLACK_CHANNEL", None)
     os_environ.pop("HOMEAUTOMATION_WEBHOOK", None)
-    os_environ.pop("ALLOWED_USERNAME", None)
+    os_environ.pop("PR_AUTHOR_FILTER", None)
 
 
 @pytest.fixture
